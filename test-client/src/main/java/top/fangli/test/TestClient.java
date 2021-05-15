@@ -2,7 +2,6 @@ package top.fangli.test;
 
 import top.fangli.rpc.api.HelloObject;
 import top.fangli.rpc.api.HelloService;
-import top.fangli.rpc.client.RpcClient;
 import top.fangli.rpc.client.RpcClientProxy;
 
 public class TestClient {
