@@ -10,7 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum SerializerCode {
-    // JSON 的序号
+
+    // KRYO
+    KRYO(0),
+    // JSON
     JSON(1);
 
     private final int code;

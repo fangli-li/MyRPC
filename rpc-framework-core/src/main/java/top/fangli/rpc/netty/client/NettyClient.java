@@ -14,6 +14,7 @@ import top.fangli.rpc.codec.CommonEncoder;
 import top.fangli.rpc.entity.RpcRequest;
 import top.fangli.rpc.entity.RpcResponse;
 import top.fangli.rpc.serializer.JsonSerializer;
+import top.fangli.rpc.serializer.KryoSerializer;
 
 import java.util.EventListener;
 
@@ -45,7 +46,7 @@ public class NettyClient implements RpcClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new CommonDecoder());
-                        pipeline.addLast(new CommonEncoder(new JsonSerializer()));
+                        pipeline.addLast(new CommonEncoder(new KryoSerializer()));
                         pipeline.addLast(new NettyClientHandler());
                     }
                 });
