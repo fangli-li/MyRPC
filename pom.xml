@@ -15,16 +15,9 @@
     </properties>
     <modules>
         <module>rpc-framework-core</module>
-        <module>rpc-framework-simple</module>
-<!--        <module>hello-service-api</module>-->
-<!--        <module>example-client</module>-->
-<!--        <module>example-server</module>-->
-<!--        <module>rpc-framework-common</module>-->
-        <module>rpc-framework-core</module>
-        <module>rpc-framework-simple</module>
         <module>rpc-framework-common</module>
-        <module>test-server</module>
         <module>rpc-framework-api</module>
+        <module>test-server</module>
         <module>test-client</module>
     </modules>
     <dependencies>

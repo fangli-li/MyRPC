@@ -2,6 +2,7 @@ package top.fangli.rpc.registry;
 
 /**
  * 服务注册接口
+ * @author fangli
  */
 public interface ServiceRegistry {
 
