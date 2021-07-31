@@ -1,4 +1,4 @@
-package top.fangli.rpc;
+package top.fangli.rpc.transport;
 
 import lombok.extern.slf4j.Slf4j;
 import top.fangli.rpc.entity.RpcRequest;
@@ -6,6 +6,7 @@ import top.fangli.rpc.entity.RpcRequest;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.UUID;
 
 /**
  * @author fangli
@@ -28,7 +29,7 @@ public class RpcClientProxy implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         log.info("调用方法: {}#{}", method.getDeclaringClass().getClassLoader(), method.getName());
-        RpcRequest rpcRequest = new RpcRequest(method.getDeclaringClass().getName(),
+        RpcRequest rpcRequest = new RpcRequest(UUID.randomUUID().toString(), method.getDeclaringClass().getName(),
                 method.getName(), args, method.getParameterTypes());
         return client.sendRequest(rpcRequest);
     }

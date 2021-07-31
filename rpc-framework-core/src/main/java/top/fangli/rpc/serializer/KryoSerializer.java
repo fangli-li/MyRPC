@@ -11,7 +11,6 @@ import top.fangli.rpc.exception.SerializeException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.function.Supplier;
 
 /**
  * @author fangli

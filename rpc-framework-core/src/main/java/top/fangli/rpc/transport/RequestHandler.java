@@ -1,9 +1,11 @@
-package top.fangli.rpc;
+package top.fangli.rpc.transport;
 
 import lombok.extern.slf4j.Slf4j;
 import top.fangli.rpc.entity.RpcRequest;
 import top.fangli.rpc.entity.RpcResponse;
 import top.fangli.rpc.enumeration.ResponseCode;
+import top.fangli.rpc.provider.DefaultServiceProvider;
+import top.fangli.rpc.provider.ServiceProvider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,8 +15,15 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 public class RequestHandler {
-    public Object handle(RpcRequest rpcRequest, Object service) {
+
+    private static final ServiceProvider serviceProvider;
+
+    static {
+        serviceProvider = new DefaultServiceProvider();
+    }
+    public Object handle(RpcRequest rpcRequest) {
         Object result = null;
+        Object service = serviceProvider.getServiceProvider(rpcRequest.getInterfaceName());
         try {
             result = invokeTargetMethod(rpcRequest, service);
             log.info("服务:{} 成功调用方法:{}", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
@@ -28,7 +37,7 @@ public class RequestHandler {
         try {
             method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
         } catch (NoSuchMethodException e) {
-            return RpcResponse.fail(ResponseCode.NOT_FOUND_METHOD);
+            return RpcResponse.fail(ResponseCode.NOT_FOUND_METHOD,rpcRequest.getRequestId());
         }
         return method.invoke(service, rpcRequest.getParameters());
     }

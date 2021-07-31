@@ -1,9 +1,8 @@
 package top.fangli.test;
 
 import top.fangli.rpc.api.HelloService;
-import top.fangli.rpc.netty.server.NettyServer;
-import top.fangli.rpc.registry.DefaultServiceRegistry;
-import top.fangli.rpc.registry.ServiceRegistry;
+import top.fangli.rpc.serializer.KryoSerializer;
+import top.fangli.rpc.transport.netty.server.NettyServer;
 
 /**
  * @author fangli
@@ -11,10 +10,9 @@ import top.fangli.rpc.registry.ServiceRegistry;
 public class NettyTestServer {
     public static void main(String[] args) {
         HelloService service = new HelloServiceImpl();
-        ServiceRegistry serviceRegistry = new DefaultServiceRegistry();
-        serviceRegistry.register(service);
-        NettyServer nettyServer = new NettyServer();
-        nettyServer.start(9999);
+        NettyServer server = new NettyServer("localhost", 9999);
+        server.setSerializer(new KryoSerializer());
+        server.publishService(service,HelloService.class);
 
     }
 }

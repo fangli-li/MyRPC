@@ -1,6 +1,7 @@
-package top.fangli.rpc;
+package top.fangli.rpc.transport;
 
 import top.fangli.rpc.entity.RpcRequest;
+import top.fangli.rpc.serializer.CommonSerializer;
 
 /**
  * 客户端类通用接口
@@ -16,4 +17,8 @@ public interface RpcClient {
      */
     Object sendRequest(RpcRequest rpcRequest);
 
+    /**
+     * @param serializer 序列化器
+     */
+    void setSerializer(CommonSerializer serializer);
 }

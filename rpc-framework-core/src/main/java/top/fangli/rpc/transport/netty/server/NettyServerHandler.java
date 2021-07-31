@@ -1,4 +1,4 @@
-package top.fangli.rpc.netty.server;
+package top.fangli.rpc.transport.netty.server;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -6,11 +6,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
-import top.fangli.rpc.RequestHandler;
+import top.fangli.rpc.transport.RequestHandler;
 import top.fangli.rpc.entity.RpcRequest;
 import top.fangli.rpc.entity.RpcResponse;
-import top.fangli.rpc.registry.DefaultServiceRegistry;
-import top.fangli.rpc.registry.ServiceRegistry;
+import top.fangli.rpc.provider.DefaultServiceProvider;
+import top.fangli.rpc.provider.ServiceProvider;
 
 /**
  * 处理RpcRequest的handler
@@ -22,11 +22,11 @@ import top.fangli.rpc.registry.ServiceRegistry;
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     private static final RequestHandler REQUEST_HANDLER;
-    private static final ServiceRegistry SERVICE_REGISTRY;
+    private static final ServiceProvider SERVICE_REGISTRY;
 
     static {
         REQUEST_HANDLER = new RequestHandler();
-        SERVICE_REGISTRY = new DefaultServiceRegistry();
+        SERVICE_REGISTRY = new DefaultServiceProvider();
     }
 
     @Override
@@ -34,9 +34,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         try {
             log.info("服务器收到请求:{}", msg);
             String interfaceName = msg.getInterfaceName();
-            Object service = SERVICE_REGISTRY.getService(interfaceName);
-            Object result = REQUEST_HANDLER.handle(msg, service);
-            ChannelFuture future = ctx.writeAndFlush(RpcResponse.success(result));
+            Object service = SERVICE_REGISTRY.getServiceProvider(interfaceName);
+            Object result = REQUEST_HANDLER.handle(msg);
+            ChannelFuture future = ctx.writeAndFlush(RpcResponse.success(result,msg.getRequestId()));
             future.addListener(ChannelFutureListener.CLOSE);
         } finally {
             ReferenceCountUtil.release(msg);
